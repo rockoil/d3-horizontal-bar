@@ -1,0 +1,24 @@
+/**
+  noimplicitAny : 모든것은 타입을 명시적으로 가져야 한다.
+  target : es5 버전의 자바스크립트로 컴파일하라.
+  sourceMap : 소스캡을 만들어라. 브라우저에서 오리지날 파일에 대한 디버깅을 할 수 있다.
+  module : es2015 (or es6) 모듈 타입을 사용하라.
+  moduleResolution : 노드가 하는 것처럼 모듈을 해석하라.
+
+*/
+
+{
+  "compilerOptions" : {
+    "outDir" : "build",
+    "noImplicitAny" : true,
+    "target" : "es6",
+    "sourceMap" : true,
+    "declaration" : true,
+    "module" : "es6",
+    "moduleResolution" : "node"
+  },
+  "exclude" : [
+    "node_modules",
+    "dist"
+  ]
+}

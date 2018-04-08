@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>D3 with TypeScript</title>
+    <style>
+      .bar {
+        stop-color: #0a80d5;
+      }
+      .text {
+        width: 6px;
+        height: 50px;
+        font-family:sans-serif;
+        font-size: 15px;
+        font-weight: bold;
+        text-anchor: middle;
+        color: black;
+      }
+      .rect {
+        width: 3px;
+        height: 60px;
+        fill: #000000;
+      }
+      .rect:hover {
+        fill: maroon;
+      }
+    </style>
+</head>
+<body>
+    <div style="width: 600px;">
+    <div id="chart"></div>
+    </div>
+
+    <script src="./d3-horizontal-bar.min.js"></script>
+    <script type="text/javascript">
+
+      var param = {
+        minVal: 20,
+        maxVal: 90,
+        avgVal: 60
+      }
+
+      app.init(param);
+
+    </script>
+</body>
+</html>
