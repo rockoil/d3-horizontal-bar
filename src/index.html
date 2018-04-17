@@ -18,9 +18,7 @@
         text-anchor: middle;
         color: black;
       }
-      .rect {
-        width: 3px;
-        height: 60px;
+      .triangle-up {
         fill: #000000;
       }
       .rect:hover {
@@ -38,8 +36,11 @@
 
       var param = {
         minVal: 20,
+        minText: "Min",
         maxVal: 90,
-        avgVal: 60
+        maxText: "Max",
+        avgVal: 60,
+        avgText: "Avg"
       }
 
       app.init(param);

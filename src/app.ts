@@ -21,8 +21,12 @@ export function init(param:any) {
 // parameter
 const _param = {
   minVal : param.minVal,
+  minText : param.minText,
   avgVal : param.avgVal,
-  maxVal : param.maxVal
+  avgText : param.avgText,
+  maxVal : param.maxVal,
+  maxText : param.maxText
+
 };
 
 // svg 추가
@@ -61,34 +65,64 @@ var g = svg.append("g").attr("height", 300).attr("transform", "translate("+margi
     g.append("rect").attr("width", width).attr("height", 40)
         .style("fill", "url(#gradient)");
 
-    // Min. line and text
-    makeRectBar(g, _param.minVal, "Min.");
+    // Min. line and text, align
+    makeRectBar(g, _param.minVal, _param.minText, "down");
 
-    // Avg. line and text
-    makeRectBar(g, _param.avgVal, "Avg.");
+    // Avg. line and text, align
+    makeRectBar(g, _param.avgVal, _param.avgText, "up");
 
-    // Max. line and text
-    makeRectBar(g, _param.maxVal, "Max.");
+    // Max. line and text, align
+    makeRectBar(g, _param.maxVal, _param.maxText, "down");
   });
 }
+
+
 // vertical bar and Text box
-function makeRectBar(g:any, x:any, text:any) {
+function makeRectBar(g:any, x:any, text:any, align:any) {
 
     let cnt:number = 1;
 
     // create a vertical bar
     // 세로바 생성
-    g.append("rect").attr("class", "rect").attr("y", -10)
-      .transition().attr("transform", "translate("+scale(x)+")").duration(1000);
+    g.append("path")
+    .attr("d", d3.symbol().type(d3.symbolTriangle).size(100))
+    .attr("transform", function() {
+      if(align == "down") {
+        return "translate(0, -10)";
+      } else {
+        return "translate(0, 50) rotate(180)";
+      }
+    })
+    .attr("fill", function() {
+      if(align == "down") {
+        return "#000000";
+      } else {
+        return "#e27037";
+      }
+    })
+    .transition().attr("transform", function() {
+      if(align == "down") {
+        return "translate("+scale(x)+", -10) rotate(180)";
+      } else if(align == "up") {
+        return "translate("+scale(x)+", 50)";
+      }
+    }).duration(1000);
 
     // create a text and set position each
     // 텍스트 박스 추가 및 텍스트 그리기
     g.append("text").attr("class", "text")
       .attr("y", function() {
-        if(text == "Avg.") {
-          return 70;
-        } else {
+        if(align == "down") {
           return -20;
+        } else {
+          return 70;
+        }
+      })
+      .attr("fill", function() {
+        if(align == "down") {
+          return "#000000";
+        } else {
+          return "#e27037";
         }
       })
       //.text(text) // 텍스트
