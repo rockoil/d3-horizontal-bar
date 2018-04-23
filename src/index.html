@@ -8,6 +8,14 @@
     <style>
       .bar {
         stop-color: #0a80d5;
+        height: 60px;
+      }
+      .bar-text {
+        font-size: 13px;
+        font-family:sans-serif;
+        font-weight: bold;
+        text-anchor: middle;
+        fill: black;
       }
       .text {
         width: 6px;
@@ -35,11 +43,13 @@
     <script type="text/javascript">
 
       var param = {
-        minVal: 20,
+        barPadding: 25,
+        barHeight: 10,
+        minVal: 70,
         minText: "Min",
         maxVal: 90,
         maxText: "Max",
-        avgVal: 60,
+        avgVal: 80,
         avgText: "Avg"
       }
 

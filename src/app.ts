@@ -14,6 +14,15 @@ const scale = d3.scaleLinear().domain([0, 100]).range([0,width]);
 // using bar opacity
 const data = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
 
+// using label text
+const dataset = [
+    {data: 10, text: 'E'},
+    {data: 30, text: 'D'},
+    {data: 50, text: 'C'},
+    {data: 70, text: 'B'},
+    {data: 90, text: 'A'}
+  ];
+
 // export a function
 // 함수 호출
 export function init(param:any) {
@@ -25,16 +34,18 @@ const _param = {
   avgVal : param.avgVal,
   avgText : param.avgText,
   maxVal : param.maxVal,
-  maxText : param.maxText
-
+  maxText : param.maxText,
+  barHeight: param.barHeight,
+  barPadding: param.barPadding
 };
 
 // svg 추가
-var svg = d3.select("#chart").append("svg").attr("width", (width+margin.left+margin.right)).attr("height",  120);
+var svg = d3.select("#chart").append("svg").attr("width", (width+margin.left+margin.right));
+
 
 // making group element and call functions
 // g 엘레멘트를 한든후 초기화 함수 호출
-var g = svg.append("g").attr("height", 300).attr("transform", "translate("+margin.left+", "+margin.top+")")
+var g = svg.append("g").attr("transform", "translate("+margin.left+", "+margin.top+")")
   .call(function(g) {
 
     // gradient
@@ -62,20 +73,28 @@ var g = svg.append("g").attr("height", 300).attr("transform", "translate("+margi
 
     // making bar and fill color using a css
     // css를 이용하여 색상을 칠하고 bar 형태로 만듬
-    g.append("rect").attr("width", width).attr("height", 40)
+    g.append("rect").attr("width", width).attr("height", _param.barHeight)
         .style("fill", "url(#gradient)");
 
+    // set position text of grade at bar
+    // 바에 텍스트 적용
+    g.selectAll("text").data(dataset).enter().append("text").attr("class", "bar-text")
+    .attr("transform", function(d) {
+      return "translate("+scale(d.data)+", "+_param.barPadding+")";
+    }).text(function(d) {
+      return d.text;
+    });
+
     // Min. line and text, align
-    makeRectBar(g, _param.minVal, _param.minText, "down");
+    makeRectBar(g, _param.minVal, _param.minText, "min");
 
     // Avg. line and text, align
-    makeRectBar(g, _param.avgVal, _param.avgText, "up");
+    makeRectBar(g, _param.avgVal, _param.avgText, "avg");
 
     // Max. line and text, align
-    makeRectBar(g, _param.maxVal, _param.maxText, "down");
+    makeRectBar(g, _param.maxVal, _param.maxText, "max");
   });
 }
-
 
 // vertical bar and Text box
 function makeRectBar(g:any, x:any, text:any, align:any) {
@@ -86,43 +105,25 @@ function makeRectBar(g:any, x:any, text:any, align:any) {
     // 세로바 생성
     g.append("path")
     .attr("d", d3.symbol().type(d3.symbolTriangle).size(100))
-    .attr("transform", function() {
-      if(align == "down") {
-        return "translate(0, -10)";
-      } else {
-        return "translate(0, 50) rotate(180)";
-      }
-    })
+    .attr("transform", "translate(0, -10)")
     .attr("fill", function() {
-      if(align == "down") {
-        return "#000000";
-      } else {
+      if(align == "avg") {
         return "#e27037";
+      } else {
+        return "#000000";
       }
     })
-    .transition().attr("transform", function() {
-      if(align == "down") {
-        return "translate("+scale(x)+", -10) rotate(180)";
-      } else if(align == "up") {
-        return "translate("+scale(x)+", 50)";
-      }
-    }).duration(1000);
+    .transition().attr("transform", "translate("+scale(x)+", -10) rotate(180)").duration(1000);
 
     // create a text and set position each
     // 텍스트 박스 추가 및 텍스트 그리기
     g.append("text").attr("class", "text")
-      .attr("y", function() {
-        if(align == "down") {
-          return -20;
-        } else {
-          return 70;
-        }
-      })
+      .attr("y", -20)
       .attr("fill", function() {
-        if(align == "down") {
-          return "#000000";
-        } else {
+        if(align == "avg") {
           return "#e27037";
+        } else {
+          return "#000000";
         }
       })
       //.text(text) // 텍스트
