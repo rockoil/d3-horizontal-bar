@@ -14,15 +14,6 @@ const scale = d3.scaleLinear().domain([0, 100]).range([0,width]);
 // using bar opacity
 const data = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
 
-// using label text
-const dataset = [
-    {data: 10, text: 'E'},
-    {data: 30, text: 'D'},
-    {data: 50, text: 'C'},
-    {data: 70, text: 'B'},
-    {data: 90, text: 'A'}
-  ];
-
 // export a function
 // 함수 호출
 export function init(param:any) {
@@ -36,12 +27,12 @@ const _param = {
   maxVal : param.maxVal,
   maxText : param.maxText,
   barHeight: param.barHeight,
-  barPadding: param.barPadding
+  barPadding: param.barPadding,
+  dataset: param.dataset
 };
 
 // svg 추가
 var svg = d3.select("#chart").append("svg").attr("width", (width+margin.left+margin.right));
-
 
 // making group element and call functions
 // g 엘레멘트를 한든후 초기화 함수 호출
@@ -78,7 +69,7 @@ var g = svg.append("g").attr("transform", "translate("+margin.left+", "+margin.t
 
     // set position text of grade at bar
     // 바에 텍스트 적용
-    g.selectAll("text").data(dataset).enter().append("text").attr("class", "bar-text")
+    g.selectAll("text").data(_param.dataset).enter().append("text").attr("class", "bar-text")
     .attr("transform", function(d) {
       return "translate("+scale(d.data)+", "+_param.barPadding+")";
     }).text(function(d) {
